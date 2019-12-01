@@ -711,10 +711,10 @@ if(req.session.authenticated){
         const db = client.db(dbName);
 var option= req.body.option;
 var keyword= req.body.keyword;
- console.log(option);
- console.log(keyword);
+
 var whereStr = {};
-whereStr[option]=keyword;
+whereStr[option]= new RegExp(keyword);
+
 
       
 	db.collection("test").find(whereStr).toArray(function(err, result) {
