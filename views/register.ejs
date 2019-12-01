@@ -4,38 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>LOGIN</title>
-    <link rel="stylesheet" href="public/css/comm.css" />
+    <title>Register</title>
+    <link rel="stylesheet" href="./public/css/comm.css" />
   </head>
   <body>
     <div id="nav">
-      <ul> 
+      <ul>
         <li>
-          <a href="index.html">login</a>
+          <a href="index">Login</a>
         </li>
         <li>
-          <a href="register.html">register</a>
+          <a href="register">Reigster</a>
         </li>
       </ul>
     </div>
     <div class="wrapper">
-      <h1>Welcome</h1>
+      <h1>Welcome to register</h1>
       <div class="form-list">
-<form action="/process_login" method="post">
+<form action="/process_register" method="GET">
         <div class="form-item">
-          <span>use name：</span>
+          <span>username:</span>
           <input type="text" name="username" id="name" />
         </div>
         <div class="form-item">
-          <span>password：</span>
-          <input type="password" name="userpwd" id="pwd" />
+          <span>password:</span>
+          <input type="text" name="userpwd" id="pwd" />
         </div>
         <div class="btn">
-          <button onclick="submit()">Login</button>
+          <button onclick="submit()">Register</button>
         </div>
       </div>
 </form>
     </div>
   </body>
-
 </html>

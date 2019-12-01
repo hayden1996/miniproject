@@ -1,4 +1,4 @@
-// More routing examples: https://expressjs.com/en/guide/routing.html
+// More routing examples: https://expressjs.com/en/guide/routing.ejs
 const express = require('express');
 const session = require('cookie-session');
 const app = express();
@@ -27,25 +27,27 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', (req,res) => {
-  res.sendFile(__dirname + '/' + 'index.html');
+  res.render('index.ejs');
 });
-app.get('/home.html', function (req, res) {
+app.get('/home', function (req, res) {
    if(req.session.authenticated){
-    res.sendFile(__dirname + '/' + 'home.html');
-}else{  res.sendFile(__dirname + '/' + 'index.html');}
+     res.render('home.ejs');
+   }else{
+     res.render('index.ejs');
+}
 
 })
-app.get('/index.html', function (req, res) {
-    res.sendFile(__dirname + '/' + 'index.html');
+app.get('/index', function (req, res) {
+    res.render('index.ejs');
 })
-app.get('/addrestaurant.html', function (req, res) {
+app.get('/addrestaurant', function (req, res) {
    if(req.session.authenticated){
-    res.sendFile(__dirname + '/' + 'addrestaurant.html');
-}else{  res.sendFile(__dirname + '/' + 'index.html');}
+        res.render('addrestaurant.ejs');
+   }else{ res.render('index.ejs');}
 })
 app.post('/process_login', urlencodedParser,function (req, res) {
  var username = req.body.username;
- var userpwd = req.body.userpwd; 
+ var userpwd = req.body.userpwd;
   	let client = new MongoClient(mongourl);
 	client.connect((err) => {
       		try {
@@ -64,25 +66,25 @@ app.post('/process_login', urlencodedParser,function (req, res) {
 	req.session.authenticated = true;
 	req.session.username=result[0].userid;
 
-var result=`<script>alert('login successful');location.href="home.html"; </script>`;
+var result=`<script>alert('login successful');location.href="home.ejs"; </script>`;
 	 res.send(result);
 
 	}else{
-	var result=`<script>alert('error password');location.href="index.html"; </script>`;
+	var result=`<script>alert('error password');location.href="index.ejs"; </script>`;
 	 res.send(result);
 	}
 	}else{
-	var result=`<script>alert('not this user');location.href="index.html"; </script>`;
+	var result=`<script>alert('not this user');location.href="index.ejs"; </script>`;
 	 res.send(result);
 }
     });
-	
+
 
 })
 
 })
-app.get('/register.html', function (req, res) {
-    res.sendFile(__dirname + '/' + 'register.html');
+app.get('/register', function (req, res) {
+     res.render('register.ejs');
 })
 app.post('/process_register', urlencodedParser,function (req, res) {
  var username = req.body.username;
@@ -105,17 +107,17 @@ app.post('/process_register', urlencodedParser,function (req, res) {
 	 insertUser(db,new_user,(result)=>{
 	 client.close();
             res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<html><body>USer was inserted into MongoDB!<br>');
+            res.write('<html><body>User was inserted into MongoDB!<br>');
 
             res.end() }) })
 
 })
 app.post('/create', function (req, res) {
- 
+
 	let form = new formidable.IncomingForm();
 	form.parse(req, (err, fields, files) => {
     if (files.filetoupload.size == 0) {
-      res.status(500).end("No file uploaded!");  
+      res.status(500).end("No file uploaded!");
     }
  let filename = files.filetoupload.path;
     if (fields.name) {
@@ -138,7 +140,7 @@ app.post('/create', function (req, res) {
     }
     if (fields.lon) {
       var lon = (fields.lon.length > 0) ? fields.lon : "untitled";
-   
+
     }
     if (fields.lat) {
       var lat = (fields.lat.length > 0) ? fields.lat : "untitled";
@@ -198,7 +200,7 @@ var image=new Buffer.from(data).toString('base64');
 	  insertRe(db,new_user,(result)=>{
 	 client.close();
             res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<html><body>Data was inserted into MongoDB!<br>  <a href="home.html">go back to home</a>');
+            res.write('<html><body>Data was inserted into MongoDB!<br>  <a href="home.ejs">go back to home</a>');
             res.end() })  })
 
 
@@ -219,7 +221,7 @@ if(req.session.authenticated){
 
 	//var name="cafe Metro"
 	//var whereStr = {"name":name};
-      
+
 	db.collection("test").find().toArray(function(err, result) {
         if (err) throw err;
 	if(result.length>0){
@@ -227,10 +229,10 @@ if(req.session.authenticated){
 	}else{
 	 res.writeHead(200, {"Content-Type": "text/html"});
             res.write('<html><body>not record<br>');
-            res.end() 
+            res.end()
 
-	} }) 
-   })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	} })
+   })}else{res.render('index.ejs',{});}
 });
 app.get('/display/id/:id', (req,res) => {
 let results={};
@@ -253,11 +255,11 @@ if(req.session.authenticated){
 	db.collection("test").find(whereStr).toArray(function(err, result) {
         if (err) throw err;
 	if(result.length>0){
-let image = new Buffer(result[0].photo,'base64');   
+let image = new Buffer(result[0].photo,'base64');
   	 res.render('information.ejs',{answer: result});
-	}else{res.sendFile(__dirname + '/' + 'index.html');}
- 	})	 
-    })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	}else{res.render('index.ejs',{});}
+ 	})
+    })}else{res.render('index.ejs',{});}
 });
 app.get('/restaurant/name/:name', (req,res) => {
 let results={};
@@ -281,9 +283,9 @@ if(req.session.authenticated){
         if (err) throw err;
 	if(result.length>0){
 	res.render('list.ejs',{answer: result});
-	}else{res.sendFile(__dirname + '/' + 'index.html');}
- 	})	 
-    })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	}else{res.render('index.ejs',{});}
+ 	})
+    })}else{res.render('index.ejs',{});}
 });
 app.get('/restaurant/cuisine/:cuisine', (req,res) => {
 let results={};
@@ -307,9 +309,9 @@ if(req.session.authenticated){
         if (err) throw err;
 	if(result.length>0){
   	res.render('list.ejs',{answer: result});
-	}else{res.sendFile(__dirname + '/' + 'index.html');}
- 	})	 
-    })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	}else{res.render('index.ejs',{});}
+ 	})
+    })}else{res.render('index.ejs',{});}
 });
 app.get('/restaurant/borough/:borough', (req,res) => {
 let results={};
@@ -333,9 +335,9 @@ if(req.session.authenticated){
         if (err) throw err;
 	if(result.length>0){
   	res.render('list.ejs',{answer: result});
-	}else{res.sendFile(__dirname + '/' + 'index.html');}
- 	})	 
-    })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	}else{res.render('index.ejs',{});}
+ 	})
+    })}else{res.render('index.ejs',{});}
 });
 app.get('/delete', function (req, res) {
    if(req.session.authenticated){
@@ -356,15 +358,15 @@ app.get('/delete', function (req, res) {
 	if(result.length>0){
 	  if(result[0].owner==req.session.username){
 	db.collection("test").deleteOne(whereStr, function(err, obj){
-   res.sendFile(__dirname + '/' + 'home.html');
+   res.render('home.ejs',{});
 	}) }else{
 	 res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<html><body>you not onwer cannot delete<br>  <a href="home.html">go back </a>');
+            res.write('<html><body>you not onwer cannot delete<br>  <a href="home.ejs">go back </a>');
             res.end();
-	
-} } }) })  
-   
-}else{  res.sendFile(__dirname + '/' + 'index.html');}
+
+} } }) })
+
+}else{  res.render('index.ejs',{});}
 })
 app.get('/addRate', (req,res) => {
 if(req.session.authenticated){
@@ -389,16 +391,16 @@ if(req.session.authenticated){
         if (err) throw err;
 	if(result.length>0){
 	let newJson= '{ "user": "'+req.session.username+'", "score": "'+rate+'"}';
-	result[0].grades.push(JSON.parse(newJson)); 
+	result[0].grades.push(JSON.parse(newJson));
 	var updateStr = {$set: { "grades" : result[0].grades }};
- db.collection("test").updateOne(whereStr, updateStr, function(err, res) {	
+ db.collection("test").updateOne(whereStr, updateStr, function(err, res) {
  });
 	res.writeHead(200, {"Content-Type": "text/html"});
-        res.write('<html><body>your rate has upload<br>  <a href="home.html">go back </a>');
+        res.write('<html><body>your rate has upload<br>  <a href="home.ejs">go back </a>');
             res.end();
-	}else{res.sendFile(__dirname + '/' + 'index.html');}
- 	})	 
-    })}else{res.sendFile(__dirname + '/' + 'index.html');}
+	}else{res.render('index.ejs',{});}
+ 	})
+    })}else{res.render('index.ejs',{});}
 });
 app.get('/change', function (req, res) {
 	 console.log(req.session.username);
@@ -421,15 +423,15 @@ app.get('/change', function (req, res) {
 	 console.log(result[0].owner);
 	  if(result[0].owner==req.session.username){
 	res.render('update.ejs',{answer: result});
-	
+
  }else{
 	 res.writeHead(200, {"Content-Type": "text/html"});
-            res.write('<html><body>you not onwer cannot edit<br>  <a href="home.html">go back </a>');
+            res.write('<html><body>you not onwer cannot edit<br>  <a href="home.ejs">go back </a>');
             res.end();
-	
-} } }) })  
-   
-}else{  res.sendFile(__dirname + '/' + 'index.html');}
+
+} } }) })
+
+}else{  res.render('index.ejs',{});}
 })
 app.post('/update', function (req, res) {
 
@@ -528,7 +530,7 @@ let client = new MongoClient(mongourl);
 	})
 
 	 }
-   
+
     }
     if (fields.lat) {
       if(fields.lon.length > 0){
@@ -541,7 +543,7 @@ let client = new MongoClient(mongourl);
 	})
 
 	 }
-   
+
     }
 
 
@@ -562,7 +564,7 @@ let client = new MongoClient(mongourl);
 	var updateStr = {$set: { "photo" :image}};
 	db.collection("test").updateOne(whereStr,updateStr,function(err, res) {
 	}) })
- 	
+
 }
  }) })  });
 app.get(/.*fly$/, (req,res) => {

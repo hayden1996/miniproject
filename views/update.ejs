@@ -2,10 +2,11 @@
 <title>Update Restaurant</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="/public/css/comm.css" />
 <body>
 
 <div class="w3-container w3-teal">
-  <h1>UPdate Restaurant</h1>
+  <h1>Update Restaurant</h1>
 </div>
 
 <form action="/update" method="post" class="w3-container" style="width:100%" enctype="multipart/form-data"> <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>"/>
@@ -29,7 +30,7 @@
   <input name="zipcode"class="w3-input" type="number" value="<%= answer[0].address.zipcode %>">
   <p>
 <label class="w3-label w3-validate">GPS Coordinates (lon.)</label></p>
-  <input name="lon"class="w3-input" type="text" value="<%= answer[0].address.coord[0] %>"> 
+  <input name="lon"class="w3-input" type="text" value="<%= answer[0].address.coord[0] %>">
   <p>
  <label class="w3-label w3-validate">GPS Coordinates (lat.)</label></p>
   <input name="lat"class="w3-input" type="text" value="<%= answer[0].address.coord[1] %>">
@@ -39,7 +40,7 @@
  <label class="w3-label w3-validate">Photo</label></p>
   <input name="filetoupload"class="w3-input" type="file">
   <p>
-  <button class="w3-btn w3-section w3-teal w3-ripple"> Updae </button></p>
+  <button class="w3-btn w3-section w3-teal w3-ripple"> Update </button></p>
 </form>
 
 </body>

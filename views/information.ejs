@@ -1,30 +1,32 @@
 <html>
     <head>
         <title>restaurant information</title>
+        <link rel="stylesheet" href="/public/css/comm.css" />
     </head>
-    <body>  
-<img width="200"  height="200" src=" data:<%=answer[0].mimetype%>;base64, <%=answer[0].photo%>" style="width:100%">
-name:<%= answer[0].name %></br>
-borough:<%= answer[0].borough %></br>
-cuisine:<%= answer[0].cuisine %></br>
-building:<%= answer[0].address.building %></br>
-zipcode:<%= answer[0].address.zipcode %></br>
-GPS:<%= answer[0].address.coord[0] %>,<%= answer[0].address.coord[1] %></br>
-created by:<%= answer[0].owner %></br>
-<ol>
-<il>Rate:<%= answer[0].grades[0].score %>(<%= answer[0].grades[0].user %>)
-<ol>
+    <body>
+<img width="50%"  height="50%" src=" data:<%=answer[0].mimetype%>;base64, <%=answer[0].photo%>"></br></br>
+name:<%= answer[0].name %></br></br>
+borough:<%= answer[0].borough %></br></br>
+cuisine:<%= answer[0].cuisine %></br></br>
+building:<%= answer[0].address.building %></br></br>
+zipcode:<%= answer[0].address.zipcode %></br></br>
+GPS:<a href="http://www.google.com/maps/place/<%= answer[0].address.coord[0] %>,<%= answer[0].address.coord[1] %>">Google Maps</a></br></br>
+<iframe src = "https://maps.google.com/maps?q=<%= answer[0].address.coord[0] %>,<%= answer[0].address.coord[1] %>&hl=es;z=14&amp;output=embed"></iframe>
+</br></br>
+created by:<%= answer[0].owner %></br></br>
+<% for(var i=0;i < answer[0].grades.length;i++){  %>
+  <div>Rate:<%= answer[0].grades[i].score %>(<%= answer[0].grades[i].user %>)</div>
+<%}%>
 
 <form action="/addRate" method="GET">
-          <span>Rate:</span>
-          <input type="number" name="rate"  min="1" max="10" />
-	  <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>"/>
-          <button >submit</button>
-
+    <div>Rate:</div></br>
+    <input type="number" name="rate"  min="1" max="10"  class="form-item"/></br>
+    <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>" class="form-item"/></br>
+    <button >submit</button></br>
 </form>
- <a href="/change?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>edit</button>
+ <a href="/change?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Edit</button></br></br>
 </a>
- <a href="/delete?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Delete</button>
+ <a href="/delete?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Delete</button></br></br>
 </a>
 
 
