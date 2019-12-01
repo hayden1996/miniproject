@@ -76,7 +76,7 @@ res.render('redirect.ejs', { link: "home", text :'login successful'})
 				} else {
 					// var result=`<script>alert('error password');location.href="index"; </script>`;
 					// res.send(result);
-res.render('redirect.ejs', { link: "nidex", text :'error password'})
+res.render('redirect.ejs', { link: "index", text :'error password'})
 				}
 			} else {
 				// var result=`<script>alert('not this user');location.href="index"; </script>`;
