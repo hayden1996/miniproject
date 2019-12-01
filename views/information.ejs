@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>restaurant information</title>
+    </head>
+    <body>  
+<img width="200"  height="200" src=" data:<%=answer[0].mimetype%>;base64, <%=answer[0].photo%>" style="width:100%">
+name:<%= answer[0].name %></br>
+borough:<%= answer[0].borough %></br>
+cuisine:<%= answer[0].cuisine %></br>
+building:<%= answer[0].address.building %></br>
+zipcode:<%= answer[0].address.zipcode %></br>
+GPS:<%= answer[0].address.coord[0] %>,<%= answer[0].address.coord[1] %></br>
+created by:<%= answer[0].owner %></br>
+<ol>
+<il>Rate:<%= answer[0].grades[0].score %>(<%= answer[0].grades[0].user %>)
+<ol>
+
+<form action="/addRate" method="GET">
+          <span>Rate:</span>
+          <input type="number" name="rate"  min="1" max="10" />
+	  <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>"/>
+          <button >submit</button>
+
+</form>
+ <a href="/change?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>edit</button>
+</a>
+ <a href="/delete?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Delete</button>
+</a>
+
+
+    </div>
+
+    </body>
+</html>

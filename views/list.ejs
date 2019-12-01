@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <title>Photos</title>
+    </head>
+    <body>
+        <ol>
+         <% for (i in answer) { %>
+	  <li><a href=/display/id/<%= answer[i].restaurant_id %>><%= answer[i].name %></a></li>
+	 <% } %>
+        </ol>
+    </body>
+</html>
