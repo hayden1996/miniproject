@@ -6,16 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>LOGIN</title>
-    <link rel="stylesheet" href="./public/css/comm.css" />
+    <link rel="stylesheet" href="/public/css/comm.css" />
   </head>
   <body>
+<form action="/search" method="post">
+<select name=option>
+  <option value="name">name</option>
+  <option value="borough">borough</option>
+  <option value="cuisine">cuisine</option>
+</select>
+ <input type="text" name="keyword"  class="form-item"/>	
+  <button >serach</button></br>
+</form>
 
       <ul>
         <li>
-          <a href="addrestaurant.ejs">create new restaurant</a>
+          <a href="addrestaurant">create new restaurant</a>
         </li>
         <li>
-         <a href="restaurantlist">show restaurant</a>
+         <a href="restaurantlist">show all restaurant</a>
         </li>
 	<li>
          <a href="logout">logout</a>
