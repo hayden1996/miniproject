@@ -55,7 +55,7 @@ app.post('/process_login', urlencodedParser, function (req, res) {
 		} catch (err) {
 			res.render('message.ejs', {
 				message: "MongoClient connect() failed!",
-				BackLink: "home",
+				BackLink: "index",
 				BackText: "go back",
 			})
 			return (-1);
@@ -76,12 +76,12 @@ res.render('redirect.ejs', { link: "home", text :'login successful'})
 				} else {
 					// var result=`<script>alert('error password');location.href="index"; </script>`;
 					// res.send(result);
-res.render('redirect.ejs', { link: "home", text :'error password'})
+res.render('redirect.ejs', { link: "nidex", text :'error password'})
 				}
 			} else {
 				// var result=`<script>alert('not this user');location.href="index"; </script>`;
 				//  res.send(result);
-res.render('redirect.ejs', { link: "home", text :'not this user'})
+res.render('redirect.ejs', { link: "index", text :'not this user'})
 
 			}
 		});
