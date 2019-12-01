@@ -111,6 +111,18 @@ app.post('/process_register', urlencodedParser, function (req, res) {
 			return (-1);
 		}
 		const db = client.db(dbName);
+
+//find the user 
+var haveUSer="false";
+
+var whereStr = {"userid":username};
+db.collection("user").find(whereStr).toArray(function (err, result) {
+for (i in result){
+ if(username==result[i].userid){haveUSer="true"; }
+}
+
+
+	if(haveUSer!="true"){
 		let new_user = {};
 		new_user['userid'] = username;
 		new_user['password'] = userpwd;
@@ -122,9 +134,17 @@ app.post('/process_register', urlencodedParser, function (req, res) {
 				BackLink: "home",
 				BackText: "go back",
 			})
-		})
+		})}else{
+		res.render('message.ejs', {
+				message: "USer is exsit",
+				BackLink: "register",
+				BackText: "go back",
+			})
+
+	          }
 	})
 
+})
 })
 app.post('/create', function (req, res) {
 
@@ -185,7 +205,7 @@ app.post('/create', function (req, res) {
 				}
 				const db = client.db(dbName);
 				//get the id and add 1
-				db.collection("restaurant").find().sort({ "restaurant_id": -1 }).limit(1).toArray(function (err, result) {
+				db.collection("test").find().sort({ "restaurant_id": -1 }).limit(1).toArray(function (err, result) {
 					var id = 0;
 					if (err) throw err;
 					if (result.length > 0) {
@@ -218,8 +238,8 @@ app.post('/create', function (req, res) {
 						client.close();
 						res.render('message.ejs', {
 							message: "Data was inserted into MongoDB!",
-							BackLink: "home",
-							BackText: "go back to home",
+							BackLink: "display/id/"+id,
+							BackText: "go  to information",
 						})
 					})
 				})
@@ -415,7 +435,7 @@ app.get('/delete', function (req, res) {
 					} else {
 						res.render('message.ejs', {
 							message: "you not onwer cannot delete",
-							BackLink: "home",
+							BackLink:"display/id/"+id,
 							BackText: "go back",
 						})
 
@@ -444,6 +464,7 @@ app.get('/addRate', (req, res) => {
 			const db = client.db(dbName);
 
 			var id = parseInt(req.query.id);
+
 			var rate = parseInt(req.query.rate);
 
 
@@ -452,7 +473,18 @@ app.get('/addRate', (req, res) => {
 			db.collection("test").find(whereStr).toArray(function (err, result) {
 				if (err) throw err;
 				if (result.length > 0) {
-					let newJson = '{ "user": "' + req.session.username + '", "score": "' + rate + '"}';
+var userexit="false";
+
+for (i in result) {
+
+ for (j in result[i].grades) {
+	if(req.session.username==result[i].grades[j].user)
+   userexit="true";
+  }
+}
+if(userexit!="true"){
+ console.log(userexit);
+ let newJson = '{ "user": "' + req.session.username + '", "score": "' + rate + '"}';
 					result[0].grades.push(JSON.parse(newJson));
 					var updateStr = { $set: { "grades": result[0].grades } };
 					db.collection("test").updateOne(whereStr, updateStr, function (err, res) {
@@ -460,12 +492,21 @@ app.get('/addRate', (req, res) => {
 
 					res.render('message.ejs', {
 						message: "your rate has upload",
-						BackLink: "home",
+						BackLink:"display/id/"+id,
+						BackText: "go back",
+					})}else{
+                                                res.render('message.ejs', {
+						message: "your can not rate,beacuse you already rate this ",
+						BackLink:"display/id/"+id,
 						BackText: "go back",
 					})
+
+
+
+			}
 				} else { res.render('index.ejs', {}); }
 			})
-		})
+		}) 
 	} else { res.render('index.ejs', {}); }
 });
 app.get('/change', function (req, res) {
@@ -647,8 +688,14 @@ app.post('/update', function (req, res) {
 				})
 
 			}
+res.render('message.ejs', {
+message: "Data was update into MongoDB!",
+BackLink: "display/id/"+id,
+BackText: "go  to information",
+})
 		})
 	})
+
 });
 app.post('/search', urlencodedParser,function(req,res) {
 if(req.session.authenticated){

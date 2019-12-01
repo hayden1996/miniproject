@@ -19,14 +19,16 @@ created by:<%= answer[0].owner %></br></br>
 <%}%>
 
 <form action="/addRate" method="GET">
-    <div>Rate:</div></br>
-    <input type="number" name="rate"  min="1" max="10"  class="form-item"/></br>
-    <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>" class="form-item"/></br>
-    <button >submit</button></br>
+	Enter rate(1-10):
+    <input type="number" name="rate"  min="1" max="10"  class="form-item"/>
+    <input type="hidden" name="id"  value="<%= answer[0].restaurant_id %>" class="form-item"/>
+    <button >submit</button></br></br>
 </form>
- <a href="/change?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Edit</button></br></br>
+ <a href="/change?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Edit</button>
 </a>
  <a href="/delete?id=<%= answer[0].restaurant_id %>" style="text-decoration: none"><button>Delete</button></br></br>
+</a>
+ <a href="/home" style="text-decoration: none"><button>Go Back</button></br></br>
 </a>
 
 
